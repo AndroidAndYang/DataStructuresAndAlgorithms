@@ -82,7 +82,7 @@ public class SingleLinkedList<E> extends AbstractList<E> {
                 if (node.element == null) {
                     return i;
                 }
-                node = first.nextNode;
+                node = node.nextNode;
             }
         } else {
             Node node = first;
@@ -90,7 +90,7 @@ public class SingleLinkedList<E> extends AbstractList<E> {
                 if (node.element.equals(element)) {
                     return i;
                 }
-                node = first.nextNode;
+                node = node.nextNode;
             }
         }
         return ELEMENT_NOT_FOUND;

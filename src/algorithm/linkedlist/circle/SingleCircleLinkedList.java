@@ -91,7 +91,7 @@ public class SingleCircleLinkedList<E> extends AbstractList<E> {
                 if (node.element == null) {
                     return i;
                 }
-                node = first.next;
+                node = node.next;
             }
         } else {
             Node node = first;
@@ -99,7 +99,7 @@ public class SingleCircleLinkedList<E> extends AbstractList<E> {
                 if (element.equals(node.element)) {
                     return i;
                 }
-                node = first.next;
+                node = node.next;
             }
         }
         return ELEMENT_NOT_FOUND;
@@ -147,16 +147,20 @@ public class SingleCircleLinkedList<E> extends AbstractList<E> {
     }
 
     public static void main(String[] args) {
-        List<Integer> singleCircle = new SingleCircleLinkedList<>();
+        List<Object> singleCircle = new SingleCircleLinkedList<>();
         singleCircle.add(1);
         singleCircle.add(2);
         singleCircle.add(3);
         singleCircle.add(4);
+        singleCircle.add(null);
         singleCircle.add(0, 0);
+
         singleCircle.add(singleCircle.size(), 5);
 
+
         singleCircle.remove(0);
-        singleCircle.remove(singleCircle.size() - 1);
+
+        System.out.println(singleCircle.indexOf(null));
 
         System.out.println(singleCircle.set(1, 11));
 
