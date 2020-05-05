@@ -11,13 +11,18 @@ import java.util.Comparator;
 public class Main {
 
     public static void test1() {
-        int[] arr = new int[]{7, 4, 9, 2, 5, 8, 13, 3};
+        int[] arr = new int[]{7, 4, 9, 2, 5, 8, 11, 1, 3, 10, 12};
 
         BinarySearchTree<Integer> binarySearchTree = new BinarySearchTree<>();
         for (int value : arr) {
             binarySearchTree.add(value);
         }
         BinaryTrees.print(binarySearchTree);
+        System.out.println("\n");
+        binarySearchTree.preorderTraversal();
+        binarySearchTree.inOrderTraversal();
+        binarySearchTree.postOrderTraversal();
+        binarySearchTree.levelOrderTraversal();
     }
 
     public static void test2() {

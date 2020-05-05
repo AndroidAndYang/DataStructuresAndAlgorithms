@@ -3,6 +3,9 @@ package algorithm.tree;
 import algorithm.tree.printer.BinaryTreeInfo;
 
 import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.concurrent.LinkedBlockingDeque;
 
 /**
  * @author: YJZ
@@ -36,32 +39,41 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
 
     }
 
-    public void add(E e) {
-
-        if (size == 0) {
-            root = new Node<>(e, null);
+    /**
+     * 添加一个值到二叉树中
+     *
+     * @param element element
+     */
+    public void add(E element) {
+        // 添加第一个节点
+        if (root == null) {
+            root = new Node<>(element, null);
             size++;
             return;
         }
 
+        // 添加的不是第一个节点
+        // 找到父节点
+        Node<E> parent = root;
         Node<E> node = root;
-        Node<E> parent = null;
-        int comparable = comparable(e, node.element);
+        int com = 0;
         while (node != null) {
+            com = compare(element, node.element);
             parent = node;
-            if (comparable > 0) {
+            if (com > 0) {
                 node = node.right;
-            } else if (comparable < 0) {
+            } else if (com < 0) {
                 node = node.left;
             } else { // 相等
+                node.element = element;
                 return;
             }
         }
-
-        Node<E> newNode = new Node<>(e, parent);
-        if (comparable > 0) {
+        // 看看插入到父节点的哪个位置
+        Node<E> newNode = new Node<>(element, parent);
+        if (com > 0) {
             parent.right = newNode;
-        } else if (comparable < 0) {
+        } else {
             parent.left = newNode;
         }
         size++;
@@ -74,13 +86,75 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
      * @param e2 比较的元素
      * @return 1 表示e1 > e2 ,-1 表示e1 < e2, 0 表示相等
      */
-    public int comparable(E e1, E e2) {
-
+    public int compare(E e1, E e2) {
         if (customComparator != null) {
             return customComparator.compare(e1, e2);
+        } else {
+            return ((Comparable) e1).compareTo(e2);
         }
+    }
 
-        return ((Comparable) e1).compareTo(e2);
+    /**
+     * 前序遍历,从根节点,然后前序遍历左子树,前序遍历右子树
+     */
+    public void preorderTraversal() {
+        preorderTraversal(root);
+    }
+
+    private void preorderTraversal(Node<E> node) {
+        if (node == null) return;
+        System.out.println(node.element);
+        preorderTraversal(node.left);
+        preorderTraversal(node.right);
+    }
+
+    /**
+     * 中序遍历,中序遍历左子树,然后根节点,中序遍历右子树
+     */
+    public void inOrderTraversal() {
+        inOrderTraversal(root);
+    }
+
+    private void inOrderTraversal(Node<E> node) {
+        if (node == null) return;
+        inOrderTraversal(node.left);
+        System.out.println(node.element);
+        inOrderTraversal(node.right);
+    }
+
+    /**
+     * 后序遍历
+     */
+    public void postOrderTraversal() {
+        postOrderTraversal(root);
+    }
+
+    private void postOrderTraversal(Node<E> node) {
+        if (node == null) return;
+        postOrderTraversal(node.left);
+        postOrderTraversal(node.right);
+        System.out.println(node.element);
+    }
+
+    /**
+     * 层序遍历
+     */
+    public void levelOrderTraversal() {
+
+        Queue<Node<E>> queue = new LinkedList<>();
+        queue.offer(root);
+        while (!queue.isEmpty()) {
+            Node<E> poll = queue.poll();
+            Node<E> left = poll.left;
+            if (left != null) {
+                queue.offer(left);
+            }
+            Node<E> right = poll.right;
+            if (right != null) {
+                queue.offer(right);
+            }
+            System.out.println(poll.element);
+        }
     }
 
     public void remove() {
